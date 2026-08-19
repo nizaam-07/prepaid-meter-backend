@@ -1,0 +1,31 @@
+{
+  "rules": {
+    "devices": {
+      "$deviceId": {
+        ".read": "auth != null",
+
+        "live": {
+          ".write": "auth != null"
+        },
+        "status": {
+          ".write": "auth != null"
+        },
+        "balance": {
+          ".write": false
+        },
+        "thresholds": {
+          ".write": "auth != null"
+        },
+        "commands": {
+          ".write": "auth != null"
+        },
+        "settings": {
+          ".write": "auth != null"
+        },
+        "alerts": {
+          ".write": "auth != null"
+        }
+      }
+    }
+  }
+}
