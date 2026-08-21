@@ -108,6 +108,14 @@ app.post('/verify-payment', async (req, res) => {
     const balanceRef = db.ref(`devices/${DEVICE_ID}/balance`);
     const result = await balanceRef.transaction(current => (current || 0) + parseFloat(amount));
 
+    // Log this recharge so the dashboard/voice assistant can answer
+    // things like "how much did I add last time"
+    await db.ref(`devices/${DEVICE_ID}/rechargeHistory`).push({
+      amount: parseFloat(amount),
+      newBalance: result.snapshot.val(),
+      timestamp: admin.database.ServerValue.TIMESTAMP,
+    });
+
     console.log(`Payment verified: +₹${amount} -> new balance ₹${result.snapshot.val()}`);
     res.json({ success: true, newBalance: result.snapshot.val() });
   } catch (err) {
